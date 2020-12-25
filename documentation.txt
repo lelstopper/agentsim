@@ -1,0 +1,56 @@
+
+
+1. occupations:
+	* trader
+	* warrior
+
+3. class counters to be added:
+	!! random x and y locs of agent ie. agent.x & agent.y
+	* colors for each occupation
+		!! farmer - green 
+		* warrior - red
+		* trader - blue
+
+2. possible mechanics
+    * settlements
+		* how to define settlements
+		* each settlement is self sufficient for now: surplus produce converts occupation of 'residents' to warrior etc
+		
+		* proposal of an underlying random noise based environment to determine feasibility to develop settlements
+			* developed on opensimplex()?
+			* center of mass of points in settlement region is the city
+			
+	* supply demand cycle
+		*  Each time step, all buyers searched for potential sellers of the required good by contacting randomly up to 10 agents in the area defined by this contact horizon. If finding a seller with the wanted goods at or below the price defined by the buyer, a trade was executed using the price of the seller. Trades were limited to the amount of money available to the buyer and the amount of goods possessed by the seller
+		* TRADERS
+	* variable productivity levels
+	* luxuries
+	* reproduction rate 
+		* somehow has to factor in settlements
+		* is it an env fn or a personal fn
+		* members become productive at 18 	
+		
+	* natural disasters
+	* machine learning models implemented to do... something?
+		* to be defined are player controllable factors, allowing machine learning to take place
+	
+	* UX/UI
+	
+	* modularization of code
+		* main simulation driver
+		* ux ui
+		* agent and environment fns
+		* github repo
+	
+	* war
+		* rules of engagement:
+			* basic: if enemy warriors of a settlement = 0; victory?
+			
+		* casus belli:
+			* higher luxuries
+			* distance bw settlements 
+		
+		* rewards
+			
+2d numpy array to be used to generate the environment to be interacted with
+agents have t locate themselves in the environment so that they can interact with it
