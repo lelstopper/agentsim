@@ -3,19 +3,36 @@ import random
 import numpy as np
 import matplotlib.pyplot as mplPP
 
+
 #classes
 class agent:
     #creates the agent of the simulation
+
+    global FirstNameMale
+    global FirstNameFemale
+    global LastName
+    FirstNameMale = ['Raj', 'Mohan', 'Pranav', 'Praneel']
+    FirstNameFemale = ['Nora', 'Shreya', 'Pramila']
+    LastName = ['Agrawal', 'Rao', 'Singh']
     
     def __init__(self):            
         self.age       = random.randint(18,60)      #random number between 18-60, useless until families are implemented
         self.gender    = random.randint(0,1)        #M - 0/F - 1
-        self.name      = 'A'                        #random name from a preexisting dict
+        self.name      = self.naming()              #random name from a preexisting dict
         self.job       = self.farmer()              #starts w farmer, changes to a higher value later on
         self.health    = 100                        #if health reaches 0 then agent dies and death of old age...
         self.prod      = 100                        #can probably be modified by a bunch of factors including health
         self.x         = random.random()
         self.y         = random.random()
+
+    def naming(self):
+        if self.gender == 0:
+            firstname = random.choice(FirstNameMale)
+        else:
+            firstname = random.choice(FirstNameFemale)
+
+        lastname = random.choice(LastName)\
+        self.name = firstname + lastname
 
     def job(self): 
         print(self.job.desc)    #functions for calling nested classes
@@ -23,9 +40,11 @@ class agent:
 
     def color(self):
         print(self.job.color)
+
         
     class farmer():
         #differing rates of production, productivity etc.
+        
         def __init__(self):
             self.color = 'green'
             self.desc  = 'farmer'
@@ -49,7 +68,7 @@ class agent:
 
 
 #functions
-def agentInitialise(): #creating the required agents at the start of the sim
+def AgentInitialise(): #creating the required agents at the start of the sim
     global agents
     global InitialAgentNos
     for i in range(InitialAgentNos):
@@ -58,11 +77,14 @@ def agentInitialise(): #creating the required agents at the start of the sim
 
 def BabyRate():
     global NewAgents
-    NewAgents = 0 #reproduction rate influenced by the rel. prosperity of the farmers
-    for a in agents:
+    global agents
+    
+    NewAgents = 0 #reproduction rate influenced by the rel. prosperity of the farmers: more importanty3
+    for a in range(NewAgents):
         a = agent()
         a.age = 0
         agents.append(a)
+        
         
 def PlotSim(): #graphical rep of the agents, jobs, health etc
     global agents
@@ -74,27 +96,32 @@ def PlotSim(): #graphical rep of the agents, jobs, health etc
         x.append(a.x)
         y.append(a.y)
         c.append(a.job.color)
-    mplPP.scatter(x, y, c = c) #color implementation
+    mplPP.scatter(x, y, c = c) #color implementation - probably doesnt completely work
     mplPP.show()
 
 
+def CallAgent():
+    global agents
+    agentReq = str(input('This is a placeholder prompt: Entering the first and last name will bring you the profile of the agent you want to see'))
 
+    for a in agents: 
+        if a.name == agentReq:
+            #display the agent details in a UI element
+            pass
+    else:
+        print('the agent you requested cannnot be found')
 
-
+        
 #control room/ vars        
 InitialAgentNos = 100 #no of agents initially
 agents = []
-agentInitialise()
+AgentInitialise()
 year = 0 #counter of the simulation year;
-jobs = ['farmer', 'miner', 'doctor', 'jeweller', 'warrior']
 
 ModelAgent = agent()
 agents.append(ModelAgent)
 
-
-
-
-
+'''
 while year <= 10: #simualation step
     for a in agents:
         a.age += 1
@@ -108,40 +135,10 @@ while year <= 10: #simualation step
         
     
     year += 1
-
-
+'''
 
 
 #tests
 print(len(agents))
 PlotSim()
 
-
-
-
-
-#todo:
-'''
-1. occupations:
-    *trader?
-    * warriro
-2. environmental counters
-    *graphical rep. of jobs, popn, goods, cities, IMR, reproduction rate etc
-    
-    
-3. to be implemented
-    *productivity of a farmer dictates the amt of suprlus produced. this surplus allow specialisation of labour and increases the value chain.
-    *luxuries and leisure (productivity boost?)
-    * natural disasters
-    
-    
-4. possible mechanics
-    * settlements:
-        randomly selected points on a 2D plane
-        using behavioral algos, you can simulate clustering of occupations. people will attempt to be closer to traders, which offer higher prices the closer you are to them
-
-5. problems to be solved
-    * How to simulate demand variations in such a way that not everyone is a jeweller in the end?
-    * Clustering and formation of towns
-    * supply demand mechanic
-'''
