@@ -33,14 +33,13 @@
 	* natural disasters
 	* machine learning models implemented to do... something?
 		* to be defined are player controllable factors, allowing machine learning to take place
+
 	
-	* UX/UI
-	
-	* modularization of code
+	!! modularization of code
 		* main simulation driver
-		* ux ui
-		* agent and environment fns
-		* github repo
+		!! ux ui
+		!! agent and environment fns
+		!! github repo
 	
 	* war
 		* rules of engagement:
@@ -54,3 +53,10 @@
 			
 2d numpy array to be used to generate the environment to be interacted with
 agents have t locate themselves in the environment so that they can interact with it
+
+ * UX/UI
+	* to show agent details
+	* to show jobs and productivity levels etc at a macro scale
+	* to show the supply demand cycle with costs etc
+	
+	
