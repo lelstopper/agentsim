@@ -16,7 +16,7 @@ LastName = ['Agrawal', 'Rao', 'Singh']
     
 
 #classes
-class agent:
+class agent():
     #creates the agent of the simulation
     #too many methods and things are being called; maybe it isnt flexible enough. :/
 
@@ -24,14 +24,15 @@ class agent:
 
         self.gender    = random.randint(0,1)        #M - 0/F - 1
         self.age       = random.randint(18,60)      #random number between 18-60, useless until families are implemented
-        self.name      = self.naming()              #random name from a preexisting dictWS
-        self.job       = self.farmer()              #starts w farmer, changes to a higher value later on
         self.health    = 100                        #if health reaches 0 then agent dies and death of old age
         self.prod      = 100                        #can probably be modified by a bunch of factors including health
         self.x         = random.random()
         self.y         = random.random()
+        self.name()                                 
+        self.farmer()                               #starts w farmer, changes to a higher value later on
 
-    def naming(self):
+
+    def name(self):
         global FirstNameMale, FirstNameFemale, LastName
         
         if self.gender == 0:
@@ -44,21 +45,18 @@ class agent:
                 
     def farmer(self):
         self.color = 'green'
-        self.desc  = 'farmer'
+        self.job  = 'farmer'
+        self.goods = self.prod
         #self.productivity
 
     def doc(self):
         self.color = 'blue'
-        self.desc  = 'doctor'
+        self.job  = 'doctor'
         self.goods = 0
 
     def miner(self):
         self.color = 'grey'
-        self.desc  = 'miner'
-
-    def __init__(self):
-        self.color = 'yellow'
-        self.desc  = 'jeweller'
+        self.job  = 'miner'
         
 #functions
 def AgentInitialise():
@@ -68,9 +66,8 @@ def AgentInitialise():
     for i in range(InitialAgentNos):
         a = agent()
         agents.append(a)
-        print(a.gender)
-        
 AgentInitialise()
+
 
 def BabyRate():
      #reproduction rate influenced by the rel. prosperity of the farmers: more importantly it helps the sim progress. each persons progeny is slightly different,
@@ -127,8 +124,6 @@ def SupplyDemand():
 ModelAgent = agent()
 agents.append(ModelAgent)
 
-print(ModelAgent.age)
-
 
 while year <= 10: #simualation step    
     for a in agents:
@@ -146,7 +141,6 @@ while year <= 10: #simualation step
         
     
     year += 1
-
 
 
 #tests
