@@ -40,6 +40,7 @@
 		!! ux ui
 		!! agent and environment fns
 		!! github repo
+		!! test
 	
 	* war
 		* rules of engagement:
