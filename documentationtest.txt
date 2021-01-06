@@ -61,5 +61,5 @@ agents have t locate themselves in the environment so that they can interact wit
 	* to show the supply demand cycle with costs etc
 	* market at each step of the sim
 	
-	
+	* creating animated plot of years and farmer
 	
