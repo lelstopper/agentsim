@@ -5,7 +5,7 @@ subsistence = 40
 farmgoods = 0
 marketrate = 0
 agents = []
-r = 0.1
+r = 1
 
 class agent():
     def __init__(self):
@@ -29,19 +29,16 @@ class agent():
     def seller(self):
         global subsistence, farmgoods, marketrate
         self.sell = sellingprice - marketrate #??
-        a.marker = 1
+        self.marker = 1
         
         #farmgoods += self.goods - subsistence
         #self.credit += self.sell * ( self.goods - subsistence )
         #print(farmgoods)
 
-for a in range(10):
-    a = agent()
-    agents.append(a)
-    a.goods = random.randint(0,100)
-    
+
 def supplydemand():
-    global agents, subistence
+    global agents, subsistence, sellerlist
+    
     buyerlist = []
     sellerlist = [] #dummy list
     
@@ -56,11 +53,20 @@ def supplydemand():
        
     for a in sellerlist:
         a.neighbours()
-        for b in neighbours:
+        for b in a.neighbours:
             if b.marker == 0:
                 #offer a trade
-                tosell = min((subsistence - b.goods), (a.goods - subsistence))#temp var
+                tosell = min((subsistence - b.goods), (a.goods - subsistence)) #temp var
                 
+                if a.goods < tosell:
+                    break
+
+                else:
+                    #sales process happens here
+                    a.credit += a.sell * ( tosell )
+                    b.credit -= b.buy * ( tosell )
+                    a.goods -= tosell
+                    b.goods += tosell
                 
             else:
                 pass
@@ -75,5 +81,15 @@ b.goods = 50
 
 c = agent()
 c.goods = 10
+
+for a in range(10):
+    a = agent()
+    agents.append(a)
+    a.goods = random.randint(0,100)
+
+
+
+supplydemand()
+print(sellerlist)
 
 
