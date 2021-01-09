@@ -87,40 +87,6 @@ class agent():
         
         self.neighbours = [n for n in agents if ( self.x - n.x ) ** 2 + (self.y - n.y ) ** 2 < r ** 2 and n != self and n.marker == 'buyer'] # terrible performance
 
-'''
-    def buyer(self):
-        #looks for goods in the market
-        
-        global BuyingRate, agents, subsistence
-        BuyingRate = self.buy
-        self.sell = 0
-
-        def buy(self):
-            global agents
-            
-            for a in agents: #lazy implementation for now: only counts for farmers
-                if a.sell <= self.buy:
-                    if a.goods >= ( subsistence - self.goods ):
-                        self.credit -= self.buy * ( subsistence - self.goods )
-                        a.credit += self.buy * ( subsistence - self.goods )
-
-                    else:
-                        self.credit -= self.buy * ( subsistence - a.goods )
-                        a.credit += self.buy * ( subsistence - a.goods )
-
-
-        while True:
-            self.buy()
-            if self.goods >= subsistence:
-                break
-    
-
-    def seller(self):
-        global SellingRate
-
-        pass#looks to sell goods in the market 
-'''   
-        
 #functions
 def AgentInitialise():
     #creating the required agents at the start of the sim
@@ -181,11 +147,13 @@ def SupplyDemand():
     '''
         steps to the algo
         1. identify sellers
-        1a. print sellers initial goods (test ke liye)
         
         2. find nearest neighbours of sellers
         3. round robin trades iterating through each one of the nearest neighbours for each one of the sellers
-        4. print sellers final goods (test ke liye)
+
+        TODO:
+        4. implement credits so that if person is poor, he cannot buy anymore stuff
+        5. inplement a flexible market rate
 
     '''
 
@@ -216,35 +184,12 @@ def SupplyDemand():
                 a.buy += seller.sell
                 seller.sell = 0
 
+    '''
     for a in agents: #test code
         if a.marker == 'buyer':
             print(a.buy)
+    '''
 
-
-
-            
-'''
-
-def SupplyDemand():
-    #at the end of every yr, when an agent attempts to sell his produce, this function is called.
-    #it dictates how many of each job is present in the simulation as well
-    
-    global agents, subsistence, farmgoods
-    subsistence = 40
-    farmgoods = 0 #farm goods in the market
-    
-    for a in agents:
-
-        if a.job == 'farmer' and a.goods >= subsistence:
-            #trial implementation
-            a.goods -= subsistence
-            a.seller()
-            
-        else:
-            a.buyer()
-            a.goods -= subsistence
-
-'''
 
 def Step():
     while year <= 10: #simualation step    
