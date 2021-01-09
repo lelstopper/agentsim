@@ -7,6 +7,7 @@ import random
 agents = []
 sellerlist = []
 r = 0.1 #
+subsistence = 75
 
 class agent():     
     def __init__(self):
@@ -26,8 +27,8 @@ class agent():
     def neighbours(self):
         global agents
         
-        self.neighbours = [n.marker for n in agents
-                          if ( self.x - n.x ) ** 2 + (a.y - n.y ) ** 2 < r ** 2 and n != a] # terrible performance
+        self.neighbours = [n for n in agents
+                          if ( self.x - n.x ) ** 2 + (a.y - n.y ) ** 2 < r ** 2 and n != a and n.marker == 'buyer'] # terrible performance
 
 
 def SupplyDemand():
@@ -47,7 +48,7 @@ def SupplyDemand():
     for a in agents:
         if a.marker == 'seller':
             sellerlist.append(a) #step 1
-            print(a.sell) #step 1a
+            #print(a.sell) #step 1a
 
         else:
             pass
@@ -55,10 +56,15 @@ def SupplyDemand():
     for seller in sellerlist: #step 2
         seller.neighbours()
         print(seller.neighbours)
+
+
+    for seller in sellerlist:
+        for a in seller.neighbours:
+            print(a.buy)
     
 
 
-for a in range(10): #arbitrary no. of agents
+for a in range(100): #arbitrary no. of agents
     a = agent()
     x = random.choices((0,1))
     if x[0] == 0:
