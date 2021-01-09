@@ -1,5 +1,5 @@
 '''
-    test t2 to redo the supply demand model more simply
+    test v2 to redo the supply demand model more simply
 '''
 
 import random
@@ -15,12 +15,12 @@ class agent():
         self.y = random.random()
 
     def sell(self):
-        self.sell = 100 #arbitrary no. of goods to buy
+        self.sell =  random.randrange(50, 100)#arbitrary no. of goods to sell
         self.marker = 'seller'
         pass
 
     def buy(self):
-        self.buy = 50 #arbitrary no. of goods to sell
+        self.buy = random.randrange(0, 50) #arbitrary no. of goods to buy
         self.marker = 'buyer'
         pass
 
@@ -55,13 +55,24 @@ def SupplyDemand():
 
     for seller in sellerlist: #step 2
         seller.neighbours()
-        print(seller.neighbours)
+        #print(seller.neighbours)
 
 
     for seller in sellerlist:
+
         for a in seller.neighbours:
-            print(a.buy)
-    
+            toSell = subsistence - a.buy
+            if seller.sell > toSell:
+                seller.sell -= toSell
+                a.buy += toSell
+
+            else:
+                a.buy += seller.sell
+                seller.sell = 0
+
+    for a in agents: #test code
+        if a.marker == 'seller':
+            print(a.sell)
 
 
 for a in range(100): #arbitrary no. of agents
@@ -72,7 +83,6 @@ for a in range(100): #arbitrary no. of agents
 
     else:
         a.buy()
-    print(a.marker)
     
     agents.append(a) #appends the agent instance to the agent list
 
