@@ -9,8 +9,10 @@ InitialAgentNos = 100 #no of agents initially
 agents = []
 BuyingRate = 1.0
 SellingRate = 1.0
-
+subsistence = 40 #food required per year to survive
+sellerlist = []
 year = 0 #counter of the simulation year;
+r = 0.1
 
 FirstNameMale = ['Raj', 'Mohan', 'Pranav', 'Praneel']
 FirstNameFemale = ['Nora', 'Shreya', 'Pramila']
@@ -27,12 +29,18 @@ class agent():
         self.gender    = random.randint(0,1)        #M - 0/F - 1
         self.age       = random.randint(18,60)      #random number between 18-60, useless until families are implemented
         self.health    = 100                        #if health reaches 0 then agent dies and death of old age
-        self.prod      = 100                        #can probably be modified by a bunch of factors including health
+        self.prod      = random.randint(1,100)      #can probably be modified by a bunch of factors including health
         self.x         = random.random()
         self.y         = random.random()
         self.name()                                 
         self.farmer()                               #starts w farmer, changes to a higher value later on
         self.credit = 100
+
+        if self.prod > subsistence:
+            self.sell()
+
+        else:
+            self.buy()
 
     def name(self):
         global FirstNameMale, FirstNameFemale, LastName
@@ -60,6 +68,26 @@ class agent():
         self.color = 'grey'
         self.job  = 'miner'
 
+    def sell(self):
+        global subsistence
+        
+        self.sell = self.goods - subsistence#arbitrary no. of goods to sell
+        self.marker = 'seller'
+        pass
+
+    def buy(self):
+        global subsistence
+        
+        self.buy = subsistence - self.goods #arbitrary no. of goods to buy
+        self.marker = 'buyer'
+        pass
+
+    def neighbours(self):
+        global agents
+        
+        self.neighbours = [n for n in agents if ( self.x - n.x ) ** 2 + (self.y - n.y ) ** 2 < r ** 2 and n != self and n.marker == 'buyer'] # terrible performance
+
+'''
     def buyer(self):
         #looks for goods in the market
         
@@ -89,9 +117,9 @@ class agent():
 
     def seller(self):
         global SellingRate
-        
-        pass#looks to sell goods in the market
-    
+
+        pass#looks to sell goods in the market 
+'''   
         
 #functions
 def AgentInitialise():
@@ -149,6 +177,55 @@ def CallAgent():
 
 
 def SupplyDemand():
+    
+    '''
+        steps to the algo
+        1. identify sellers
+        1a. print sellers initial goods (test ke liye)
+        
+        2. find nearest neighbours of sellers
+        3. round robin trades iterating through each one of the nearest neighbours for each one of the sellers
+        4. print sellers final goods (test ke liye)
+
+    '''
+
+    global agents, sellerlist
+    
+    for a in agents:
+        if a.marker == 'seller':
+            sellerlist.append(a) #step 1
+            #print(a.sell) #step 1a
+
+        else:
+            pass
+
+    for seller in sellerlist: #step 2
+        seller.neighbours()
+        #print(seller.neighbours)
+
+
+    for seller in sellerlist:
+
+        for a in seller.neighbours:
+            toSell = subsistence - a.buy
+            if seller.sell > toSell:
+                seller.sell -= toSell
+                a.buy += toSell
+
+            else:
+                a.buy += seller.sell
+                seller.sell = 0
+
+    for a in agents: #test code
+        if a.marker == 'buyer':
+            print(a.buy)
+
+
+
+            
+'''
+
+def SupplyDemand():
     #at the end of every yr, when an agent attempts to sell his produce, this function is called.
     #it dictates how many of each job is present in the simulation as well
     
@@ -167,6 +244,7 @@ def SupplyDemand():
             a.buyer()
             a.goods -= subsistence
 
+'''
 
 def Step():
     while year <= 10: #simualation step    
@@ -193,4 +271,5 @@ if year % 10 == 0: #yields statistics for mapping
 
 #tests
 PlotSim()
+SupplyDemand()
 
