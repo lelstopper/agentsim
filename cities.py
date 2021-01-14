@@ -2,7 +2,7 @@ import matplotlib.pyplot as mplPP
 import random
 import numpy
 
-r = .2
+r = .21
 
 class City():
     def __init__(self):
@@ -34,7 +34,7 @@ cities = []
 cx = []
 cy = []
 
-for c in range(50):
+for c in range(10):
     c = City()
     cities.append(c)
 
