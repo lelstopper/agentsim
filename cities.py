@@ -2,7 +2,7 @@ import matplotlib.pyplot as mplPP
 import random
 import numpy
 
-r = .21
+r = .4
 
 class City():
     def __init__(self):
@@ -13,8 +13,8 @@ class City():
         
     def Neighbour(self):
         global cities
-        self.neighbours = numpy.array([[n.x for n in cities if ( self.x - n.x ) ** 2 + (self.y - n.y ) ** 2 < r ** 2 and n != self  ],
-                                       [n.y for n in cities if ( self.x - n.x ) ** 2 + (self.y - n.y ) ** 2 < r ** 2 and n != self ]]) # terrible performance
+        self.neighbours = numpy.array([[n.x for n in cities if ( self.x - n.x ) ** 2 + (self.y - n.y ) ** 2 < r ** 2 and n != self  ], # can also implement an upper neighbour limit
+                                       [n.y for n in cities if ( self.x - n.x ) ** 2 + (self.y - n.y ) ** 2 < r ** 2 and n != self ]]) # terrible performance acc to big O notation; this scales terribly
         
     def plot(self):
         knnx = []
@@ -41,7 +41,7 @@ for c in range(10):
 def PlotSim():
     global cities
     for c in cities:
-        cx.append(c.x)  
+        cx.append(c.x)
         cy.append(c.y)
 
     mplPP.scatter(cx, cy)    
