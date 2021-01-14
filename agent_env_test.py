@@ -119,11 +119,26 @@ def PlotSim():
     x = []
     y = []
     c = []
+
+    
+    knnx = []
+    knny = []
     for a in agents:
         x.append(a.x)
         y.append(a.y)
         c.append(a.color)
-    mplPP.scatter(x, y, c = c) #color implementation - probably doesnt completely work
+
+        '''for b in (range(2 * len(a.neighbours[0]))):
+                    if b % 2 == 0:
+                        knnx.append(a.x)
+                        knny.append(a.y)
+
+                    else:
+                        knnx.append(a.neighbours[ i // 2 ].x)
+        mplPP.plot(knnx,knny)'''
+        mplPP.scatter(x, y, c = c) #color implementation - probably doesnt completely work
+
+
     mplPP.show()
 
 
@@ -183,12 +198,6 @@ def SupplyDemand():
             else:
                 a.buy += seller.sell
                 seller.sell = 0
-
-    '''
-    for a in agents: #test code
-        if a.marker == 'buyer':
-            print(a.buy)
-    '''
 
 
 def Step():
