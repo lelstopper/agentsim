@@ -8,3 +8,5 @@ steps of algorithm:
     4. run benchmarks
 
 '''
+
+current_x, current_y = 0, 0
