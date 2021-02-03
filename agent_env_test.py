@@ -86,7 +86,7 @@ class agent():
         global agents
         
         self.neighbours = [n for n in agents if ( self.x - n.x ) ** 2 + (self.y - n.y ) ** 2 < r ** 2 and n != self and n.marker == 'buyer'] # terrible performance
-
+        print(self.neighbours)
 #functions
 def AgentInitialise():
     #creating the required agents at the start of the sim
