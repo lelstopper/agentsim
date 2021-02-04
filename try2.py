@@ -38,16 +38,16 @@ import matplotlib.pyplot as mplPP
 import random
 
 #control room
-FirstNameMale = ['Raj', 'Mohan', 'Pranav', 'Praneel', 'Rohan']
-FirstNameFemale = ['Nora', 'Shreya', 'Pramila']
-LastName = ['Agrawal', 'Rao', 'Singh']
+FirstNameMale = ['Raj', 'Mohan', 'Pranav', 'Praneel', 'Rohan', 'Anish', 'Akhil', 'Jay']
+FirstNameFemale = ['Nora', 'Shreya', 'Pramila', 'Bhavya']
+LastName = ['Agrawal', 'Rao', 'Singh', 'Yadav', 'Prasad', 'Jithendra']
 
 InitialAgentNos =  100 #no of agents initially
 agents = []
 
 subsistence = 50
 
-r = 0.2
+r = 0.1
 
 
 #classes
@@ -121,7 +121,7 @@ class agent():
         NeighbourData = {
                           'Name: ': [n.name for n in self.neighbours],
                           'Age': [n.age for n in self.neighbours],
-                          'Job   ': [n.job for n in self.neighbours],
+                          'Job ': [n.job for n in self.neighbours],
                           'Sex': [n.gender for n in self.neighbours],
                           'Goods': [n.goods for n in self.neighbours],
                           'Cash': [n.credit for n in self.neighbours],
@@ -169,18 +169,18 @@ def MarketInitialise():
             a.neighbours()
 
             for b in a.neighbours:
-                #state the buyers demands
-                #state the sellers inventory
+                print(b.name + ' wants to buy '+ str(b.buy))   #state the buyers demands
+                print(a.name + ' can sell ' + str(a.sell))  #state the sellers inventory
+                print('\n')
 
                 #check if the trade is possible:
-                    #if possible, update:
+                if a.sell >= b.buy: #credit argument too
+                    pass
                         #a.goods, a.buy, a.credit
                         #b.sell, b.goods, b.credit
                         #create a token for the trade that has taken place
 
 MarketInitialise()
-
-def YrUpdate():
     
 #Data
 
