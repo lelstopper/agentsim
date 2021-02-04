@@ -7,7 +7,9 @@ current end condition:
 multiple AI will be used, and they will periodically interact with each other; maybe even trade
 
 each agent gets
-    * productivity influenced by taxation rate
+    * productivity
+        * factors ???
+        
     * basic needs
     * tax rate - AI definable
     * social security - AI definable
@@ -15,6 +17,15 @@ each agent gets
     
 trade rules:
     *
+
+TODO:
+    * flowchart of functions so that we can see the simulation progress
+        ie. AgentInitialise -> [ MarketInitialise -> SupplyDemand ] x years
+
+    * credit system
+
+    * inplement a flexible market rate
+    * tax rate
 
 
  database used to store values of the occupation details to be queried
@@ -135,18 +146,19 @@ def AgentInitialise():
         agents.append(a)
 AgentInitialise()
  
-def SupplyDemand():
+def MarketInitialise():
     
     '''
         steps to the algo
         1. identify sellers
         
         2. find nearest neighbours of sellers
-        3. round robin trades iterating through each one of the nearest neighbours for each one of the sellers
+        3. round robin trades iterating through each one of the nearest neighbours for each one of the sellers, creating a list
+
+        4. complete the trades, update the status of each buyer and seller
+        5. start the next year by updating environmental variables and how agents react to it
 
         TODO:
-        4. implement credits so that if person is poor, he cannot buy anymore stuff
-        5. inplement a flexible market rate
 
     '''
 
@@ -156,11 +168,20 @@ def SupplyDemand():
         if a.marker == 'seller':
             a.neighbours()
 
-SupplyDemand()
+            for b in a.neighbours:
+                #state the buyers demands
+                #state the sellers inventory
 
+                #check if the trade is possible:
+                    #if possible, update:
+                        #a.goods, a.buy, a.credit
+                        #b.sell, b.goods, b.credit
+                        #create a token for the trade that has taken place
 
+MarketInitialise()
 
-
+def YrUpdate():
+    
 #Data
 
 
@@ -188,6 +209,7 @@ SellerData = {'Name: ': [a.name for a in agents if a.marker == 'seller'],
               
               #creates a data visualisation for sellers of the simulation
             }
+
 SellerTable = pd.DataFrame(data = SellerData)
 print(SellerTable, '\n', '\n')
 
@@ -201,6 +223,7 @@ AgentData = { 'Name: ': [a.name for a in agents],
               
               #creates a data visualisation of the simulation
             }
+
 AgentTable = pd.DataFrame(data = AgentData)
 print(AgentTable, '\n', '\n')
 
