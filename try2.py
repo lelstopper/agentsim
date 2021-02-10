@@ -65,7 +65,7 @@ agents = []
 
 subsistence = 40
 MarketRate = 1
-
+year = 0
 r = 0.25
 
 
@@ -272,14 +272,14 @@ BuyerTable = pd.DataFrame(data = BuyerData)
 print(BuyerTable, '\n', '\n')
 
 
-SellerData = {'Name: ': [a.name for a in agents if a.marker == 'seller'],
-              'Age': [a.age for a in agents if a.marker == 'seller'],
-              'Job   ': [a.job for a in agents if a.marker == 'seller'],
-              'Sex': [a.gender for a in agents if a.marker == 'seller'],
-              'Productivity': [a.prod for a in agents if a.marker == 'seller'],
-              'Goods': [a.goods for a in agents if a.marker == 'seller'],
-              'Cash': [a.credit for a in agents if a.marker == 'seller'],
-              'Status': [a.marker for a in agents if a.marker == 'seller'],
+SellerData = {'Name: ':         [a.name for a in agents if a.marker == 'seller'],
+              'Age':            [a.age for a in agents if a.marker == 'seller'],
+              'Job   ':         [a.job for a in agents if a.marker == 'seller'],
+              'Sex':            [a.gender for a in agents if a.marker == 'seller'],
+              'Productivity':   [a.prod for a in agents if a.marker == 'seller'],
+              'Goods':          [a.goods for a in agents if a.marker == 'seller'],
+              'Cash':           [a.credit for a in agents if a.marker == 'seller'],
+              'Status':         [a.marker for a in agents if a.marker == 'seller'],
               
               #creates a data visualisation for sellers of the simulation
             }
@@ -296,8 +296,11 @@ AgentData = { 'Name: ': [a.name for a in agents],
               'Status': [a.marker for a in agents],
               'Goods': [a.goods for a in agents],
               #creates a data visualisation of the simulation
+              #TODO: Implement all variables
+                      
             }
 
 AgentTable = pd.DataFrame(data = AgentData)
-print(AgentTable, '\n', '\n')
 
+AgentTableSave = r'C:\Users\Pranav\Documents\GitHub\agentsim\CSVs\AgentData'
+AgentTable.to_csv(AgentTableSave + str(year) + '.csv')
