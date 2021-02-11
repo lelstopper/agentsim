@@ -1,26 +1,26 @@
 '''
-simulate 'x' number of workers and try and fulfil end conditions as well as possible.
+simulate 'x' number of agents and try and fulfil end conditions as well as possible.
 
 current end condition:
     1. gross economic output after a set amt of time
     1a. keep as many children alive to enable condition 1
 
-multiple AIs will be used, and they will periodically interact with each other; maybe even trade
-
-
-
 sellers will be trying to get as many goods off their hands as possible, they will even sell at a slight loss to get rid of produce.
 each agent gets
     * productivity
-        * factors ???
+        *
+        *
+        * 
         
     * basic needs
+        * subsistence
+        * social security -  AI definable(not a priority)
+        
     * tax rate - AI definable
         * decline of individual income in proportion to the tax rate
         * fixed amount to tax entire society: AI can decide who gets taxed more
 
     * occupational role
-    * social security - AI definable
     * selling / buying price of goods - marketrate - AI definable
 
 children can be implemented as a challenge condition for social securities etc. as of right now they have no guardians, the state must take care of them. all new agents are children w age = 0;
@@ -31,22 +31,26 @@ TODO:
     * flowchart of functions so that we can see the simulation progress
         ie. AgentInitialise -> [ MarketInitialise -> SupplyDemand ] x years
 
-    * SQL Connectivity
+    * Connectivity
     * credit system
     * inplement a flexible market rate
     * population changes
     * tax rate
+    * benchmarking
+    * create a gui to access file details
     * occupational changes
         * everyone starts off as a farmer, and the AI can probably decide when to change a farmer to say, a trader.
 
 DONE:
     * agent initilisation
+    * Write to CSV
 
 
  LIST OF POSSIBLE AI CONTROLLABLE 'NODES':
      * tax rate ( flexible )
      * rate of change of occupation
      * marketrate (possible)
+
  '''
 
 #imports
@@ -54,6 +58,8 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as mplPP
 import random
+import tempfile
+import tkinter
 
 #control room
 FirstNameMale = ['Raj', 'Mohan', 'Pranav', 'Praneel', 'Rohan', 'Anish', 'Akhil', 'Jay', 'Naresh', 'Rajesh', 'Manish', 'Hitesh']
@@ -79,9 +85,9 @@ class agent():
         self.x         = random.random()
         self.y         = random.random()
         self.prod      = random.randint(1,100)        
-        self.age       = random.randint(18,60)      #random number between 18-60, useless until families are implemented
+        self.age       = random.randint(18,60)
         self.name()                                 
-        self.farmer()                               #starts w farmer, changes to a higher value later on
+        self.farmer()                               #starts w farmer, changes to any other value later on
         self.credit = 100
         
         if self.prod > subsistence:
@@ -135,7 +141,8 @@ class agent():
     def neighbours(self):
         global agents
         
-        self.neighbours = [n for n in agents if ( self.x - n.x ) ** 2 + (self.y - n.y ) ** 2 < r ** 2 and n != self and n.marker == 'buyer'] # terrible implementation
+        self.neighbours = [n for n in agents if ( self.x - n.x ) ** 2
+                           + (self.y - n.y ) ** 2 < r ** 2 and n != self and n.marker == 'buyer'] # terrible implementation
 
         NeighbourData = {
                           'Name': [n.name for n in self.neighbours],
@@ -162,6 +169,7 @@ def AgentInitialise():
     global agents, InitialAgentNos
     for i in range(InitialAgentNos):
         a = agent()
+        a.i = i
         agents.append(a)
 AgentInitialise()
  
@@ -169,16 +177,12 @@ def Market1Initialise():
     
     '''
         steps to the algo
-        1. identify sellers
-        
-        2. find nearest neighbours of sellers
-        3. round robin trades iterating through each one of the nearest neighbours for each one of the sellers, creating a list
+            1. identify sellers
+            
+            2. find nearest neighbours of sellers
+            3. round robin trades iterating through each one of the nearest neighbours for each one of the sellers, creating a list
 
-        4. complete the trades, update the status of each buyer and seller
-        5. start the next year by updating environmental variables and how agents react to it
-
-        TODO:
-
+            4. complete the trades, update the status of each buyer and seller
     '''
 
     global agents
@@ -201,10 +205,10 @@ def Market1Initialise():
                     b.goods += b.buy
                     b.credit -= ( b.buy * MarketRate )
                     b.buy = 0
-
-                    a.neighbours.remove(b)
-                    pass #create a token for the trade that has taken place in the SQL Database
-                
+                    #TODO: Create a token
+                    
+                    a.neighbours.remove(b)                    
+                    
                 elif ( a.sell < b.buy ) and (b.credit > a.sell ): #credit argument too'
                     b.buy -= a.sell
                     b.goods += a.sell
@@ -219,10 +223,8 @@ def Market1Initialise():
                     pass #trade cannot go through
 
 Market1Initialise()
-    
-#Data
 
-def YrUpdate():
+def Counter():
     '''
     steps to the algo:
         1. initialise the counter
@@ -253,23 +255,27 @@ def YrUpdate():
             * 
 
     '''
-    pass
+    global agents
+    for a in agents:
+        if a.goods < subsistence:
+            print(a.name, a.i)
+            del agents[a.i]
 
-
-
-
-BuyerData = {'Name: ': [a.name for a in agents if a.marker == 'buyer'],
-              'Age': [a.age for a in agents if a.marker == 'buyer'],
+Counter()
+#Data
+BuyerData = {'Name: ':  [a.name for a in agents if a.marker == 'buyer'],
+              'Age':    [a.age for a in agents if a.marker == 'buyer'],
               'Job   ': [a.job for a in agents if a.marker == 'buyer'],
-              'Sex': [a.gender for a in agents if a.marker == 'buyer'],
-              'Goods': [a.goods for a in agents if a.marker == 'buyer'],
-              'Cash': [a.credit for a in agents if a.marker == 'buyer'],
+              'Sex':    [a.gender for a in agents if a.marker == 'buyer'],
+              'Goods':  [a.goods for a in agents if a.marker == 'buyer'],
+              'Cash':   [a.credit for a in agents if a.marker == 'buyer'],
               'Status': [a.marker for a in agents if a.marker == 'buyer'],
               
               #creates a data visualisation for buyers of the simulation
             }
+
 BuyerTable = pd.DataFrame(data = BuyerData)
-print(BuyerTable, '\n', '\n')
+print(BuyerTable, '\n', '\n')#as of rn unnecessary
 
 
 SellerData = {'Name: ':         [a.name for a in agents if a.marker == 'seller'],
@@ -285,22 +291,29 @@ SellerData = {'Name: ':         [a.name for a in agents if a.marker == 'seller']
             }
 
 SellerTable = pd.DataFrame(data = SellerData)
-print(SellerTable, '\n', '\n')
+print(SellerTable, '\n', '\n') #as of rn unnecessary
 
-AgentData = { 'Name: ': [a.name for a in agents],
-              'Age': [a.age for a in agents],
-              'Job   ': [a.job for a in agents],
-              'Sex': [a.gender for a in agents],
-              'Productivity': [a.prod for a in agents],
-              'Cash': [a.credit for a in agents],
-              'Status': [a.marker for a in agents],
-              'Goods': [a.goods for a in agents],
-              #creates a data visualisation of the simulation
-              #TODO: Implement all variables
-                      
+
+AgentData = {
+              'Index':          [a.i for a in agents],  
+              'Name':           [a.name for a in agents],
+              'Age':            [a.age for a in agents],
+              'Job':            [a.job for a in agents],
+              'Sex':            [a.gender for a in agents],
+              'Productivity':   [a.prod for a in agents],
+              'Cash':           [a.credit for a in agents],
+              'Status':         [a.marker for a in agents],
+              'Goods':          [a.goods for a in agents],
+              
+              #creates a data visualisation of the simulation                      
             }
 
 AgentTable = pd.DataFrame(data = AgentData)
 
 AgentTableSave = r'C:\Users\Pranav\Documents\GitHub\agentsim\CSVs\AgentData'
-AgentTable.to_csv(AgentTableSave + str(year) + '.csv')
+with tempfile.NamedTemporaryFile(mode='r+') as temp:
+    AgentTable.to_csv(AgentTableSave + str(year) + '.csv', index = False) # tempfile not doing its thing rn 
+
+
+
+
