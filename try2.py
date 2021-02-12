@@ -263,7 +263,8 @@ def Counter():
 
 Counter()
 #Data
-BuyerData = {'Name: ':  [a.name for a in agents if a.marker == 'buyer'],
+BuyerData = {
+              'Name: ':  [a.name for a in agents if a.marker == 'buyer'],
               'Age':    [a.age for a in agents if a.marker == 'buyer'],
               'Job   ': [a.job for a in agents if a.marker == 'buyer'],
               'Sex':    [a.gender for a in agents if a.marker == 'buyer'],
