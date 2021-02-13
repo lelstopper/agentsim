@@ -279,7 +279,7 @@ BuyerTable = pd.DataFrame(data = BuyerData)
 print(BuyerTable, '\n', '\n')#as of rn unnecessary
 
 
-SellerData = {'Name: ':         [a.name for a in agents if a.marker == 'seller'],
+SellerData = {'Name: ':         [a.name for a   in agents if a.marker == 'seller'],
               'Age':            [a.age for a in agents if a.marker == 'seller'],
               'Job   ':         [a.job for a in agents if a.marker == 'seller'],
               'Sex':            [a.gender for a in agents if a.marker == 'seller'],
